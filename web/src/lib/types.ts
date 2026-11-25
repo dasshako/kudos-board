@@ -17,6 +17,8 @@ export type Kudos = {
   message: string
   badge: string
   theme: string
+  textColor: string
+  gifUrl: string | null
   createdAt: string
   sender: Person
   recipients: Person[]
@@ -34,6 +36,12 @@ export type Stats = {
   week: number
   leaderboard: LeaderboardEntry[]
   categories: { badge: string; count: number }[]
+}
+
+export type GifResult = {
+  id: string
+  title: string
+  url: string
 }
 
 export type Sort = 'new' | 'top'

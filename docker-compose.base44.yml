@@ -13,6 +13,10 @@ services:
       - PORT=8000
       - DB_PATH=/data/kudos.db
       - NODE_ENV=development
+    # Platform-managed secrets (e.g. GIPHY_API_KEY). Absent keys fall back to
+    # the curated GIF set in api/src/gifs.js.
+    env_file:
+      - /run/base44/app.env
     volumes:
       - ${BASE44_PROJECT_ROOT}:/workspace
       - api_node_modules:/workspace/api/node_modules

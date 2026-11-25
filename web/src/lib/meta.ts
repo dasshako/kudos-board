@@ -110,6 +110,53 @@ export const THEME_BY_ID: Record<string, ThemeMeta> = Object.fromEntries(
   THEMES.map((theme) => [theme.id, theme])
 )
 
+export type TextColorMeta = {
+  id: string
+  swatch: string
+  text: string
+  body: string
+}
+
+// Card text colours: one pair per colour so the ink stays readable on both the
+// light card and the dark one. `text` styles names, `body` the kudos message.
+export const TEXT_COLORS: TextColorMeta[] = [
+  { id: 'default', swatch: 'bg-fg', text: 'text-fg', body: 'text-fg/95' },
+  {
+    id: 'violet',
+    swatch: 'bg-violet-500',
+    text: 'text-violet-700 dark:text-violet-200',
+    body: 'text-violet-800 dark:text-violet-200',
+  },
+  {
+    id: 'blue',
+    swatch: 'bg-sky-500',
+    text: 'text-sky-700 dark:text-sky-200',
+    body: 'text-sky-800 dark:text-sky-200',
+  },
+  {
+    id: 'emerald',
+    swatch: 'bg-emerald-500',
+    text: 'text-emerald-700 dark:text-emerald-200',
+    body: 'text-emerald-800 dark:text-emerald-200',
+  },
+  {
+    id: 'amber',
+    swatch: 'bg-amber-500',
+    text: 'text-amber-700 dark:text-amber-200',
+    body: 'text-amber-800 dark:text-amber-200',
+  },
+  {
+    id: 'rose',
+    swatch: 'bg-rose-500',
+    text: 'text-rose-700 dark:text-rose-200',
+    body: 'text-rose-800 dark:text-rose-200',
+  },
+]
+
+export function textColorOf(id: string | null | undefined) {
+  return TEXT_COLORS.find((color) => color.id === id) ?? TEXT_COLORS[0]
+}
+
 export const EMOJI = ['👏', '🔥', '🚀', '💜', '🙌']
 
 export function initials(name: string) {

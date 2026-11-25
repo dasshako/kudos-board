@@ -1,4 +1,4 @@
-import type { Filters, Kudos, Person, Reaction, Stats } from './types'
+import type { Filters, GifResult, Kudos, Person, Reaction, Stats } from './types'
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, {
@@ -43,6 +43,12 @@ export type CreateKudosInput = {
   message: string
   badge: string
   theme: string
+  textColor: string
+  gifUrl: string | null
+}
+
+export function searchGifs(query: string) {
+  return request<GifResult[]>(`/api/gifs/search?q=${encodeURIComponent(query)}`)
 }
 
 export function createKudos(input: CreateKudosInput) {

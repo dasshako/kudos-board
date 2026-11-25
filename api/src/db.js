@@ -41,8 +41,15 @@ db.exec(`
   );
 `)
 
+// Databases created before card colours and GIFs existed get the columns added in place.
+for (const column of ['text_color', 'gif_url']) {
+  const exists = db.prepare('PRAGMA table_info(kudos)').all().some((row) => row.name === column)
+  if (!exists) db.exec(`ALTER TABLE kudos ADD COLUMN ${column} TEXT`)
+}
+
 export const BADGES = ['teamwork', 'innovation', 'kindness', 'impact', 'leadership', 'craft']
 export const THEMES = ['sunrise', 'ocean', 'orchid', 'forest']
+export const TEXT_COLORS = ['default', 'violet', 'blue', 'emerald', 'amber', 'rose']
 export const EMOJI = ['👏', '🔥', '🚀', '💜', '🙌']
 
 export const PEOPLE = [
@@ -285,6 +292,8 @@ export function getKudos({ badge = 'all', q = '', sort = 'new', viewer = null } 
       message: row.message,
       badge: row.badge,
       theme: row.theme,
+      textColor: row.text_color || 'default',
+      gifUrl: row.gif_url || null,
       createdAt: row.created_at,
       sender: {
         id: row.sender_id,
@@ -338,14 +347,15 @@ export function getStats() {
   return { totals, week, leaderboard, categories }
 }
 
-export function createKudos({ senderId, recipientIds, message, badge, theme }) {
+export function createKudos({ senderId, recipientIds, message, badge, theme, textColor, gifUrl }) {
   const id = randomUUID()
   const createdAt = new Date().toISOString()
 
   db.transaction(() => {
     db.prepare(
-      'INSERT INTO kudos (id, sender_id, message, badge, theme, created_at) VALUES (?, ?, ?, ?, ?, ?)'
-    ).run(id, senderId, message, badge, theme, createdAt)
+      `INSERT INTO kudos (id, sender_id, message, badge, theme, text_color, gif_url, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    ).run(id, senderId, message, badge, theme, textColor, gifUrl, createdAt)
     const insertRecipient = db.prepare('INSERT INTO kudos_recipients (kudos_id, person_id) VALUES (?, ?)')
     for (const personId of recipientIds) insertRecipient.run(id, personId)
   })()

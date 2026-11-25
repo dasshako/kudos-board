@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
 import Avatar from './Avatar'
 import BadgePill from './BadgePill'
-import { EMOJI, THEMES, THEME_BY_ID, recipientLine, timeAgo } from '../lib/meta'
+import { EMOJI, THEMES, THEME_BY_ID, recipientLine, textColorOf, timeAgo } from '../lib/meta'
 import { useI18n } from '../lib/i18n'
 import type { Kudos } from '../lib/types'
 
@@ -18,6 +18,7 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
   const { t, locale } = useI18n()
   const [trayOpen, setTrayOpen] = useState(false)
   const theme = THEME_BY_ID[kudos.theme] ?? THEMES[0]
+  const color = textColorOf(kudos.textColor)
   const teams = [...new Set(kudos.recipients.map((person) => person.team))]
 
   return (
@@ -42,10 +43,10 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
             <Avatar person={kudos.sender} size={40} />
             <div className="min-w-0">
               <p className="truncate text-[13px] text-mist">
-                <span className="font-medium text-fg">{kudos.sender.name}</span>{' '}
+                <span className={`font-medium ${color.text}`}>{kudos.sender.name}</span>{' '}
                 {t('card.celebrated')}
               </p>
-              <p className="truncate text-[15px] font-semibold tracking-tight">
+              <p className={`truncate text-[15px] font-semibold tracking-tight ${color.text}`}>
                 {recipientLine(kudos.recipients, t('common.and'))}
               </p>
             </div>
@@ -53,7 +54,18 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
           <BadgePill id={kudos.badge} />
         </div>
 
-        <p className="font-display mt-4 text-[17px] leading-relaxed text-fg/95">{kudos.message}</p>
+        <p className={`font-display mt-4 text-[17px] leading-relaxed ${color.body}`}>
+          {kudos.message}
+        </p>
+
+        {kudos.gifUrl && (
+          <img
+            src={kudos.gifUrl}
+            alt=""
+            loading="lazy"
+            className="mt-3 max-h-64 rounded-2xl border border-line/10"
+          />
+        )}
 
         <div className="mt-4 flex items-center gap-2.5">
           <div className="flex -space-x-2">

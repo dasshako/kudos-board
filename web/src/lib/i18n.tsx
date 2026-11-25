@@ -102,6 +102,16 @@ const en = {
   'composer.yourMessage': 'Your message',
   'composer.messagePlaceholder': 'Be specific — what did they do, and why did it matter?',
   'composer.cardStyle': 'Card style',
+  'composer.textColor': 'Text color',
+  'composer.gif': 'GIF',
+  'composer.gifAdd': 'Add a GIF',
+  'composer.gifChange': 'Change GIF',
+  'composer.gifRemove': 'Remove GIF',
+  'composer.gifSearch': 'Search GIFs',
+  'composer.gifSearchPlaceholder': 'Search a feeling, a dance, a face…',
+  'composer.gifLoading': 'Loading GIFs…',
+  'composer.gifEmpty': 'No GIFs match that search.',
+  'composer.gifError': 'Could not load GIFs right now.',
   'composer.preview': 'Preview',
   'composer.previewPlaceholder': 'Your words of appreciation will appear here.',
   'composer.postedPublicly': 'Posted publicly to the team wall.',
@@ -125,6 +135,13 @@ const en = {
   'cardTheme.ocean': 'Ocean',
   'cardTheme.orchid': 'Orchid',
   'cardTheme.forest': 'Forest',
+
+  'color.default': 'Default',
+  'color.violet': 'Violet',
+  'color.blue': 'Blue',
+  'color.emerald': 'Emerald',
+  'color.amber': 'Amber',
+  'color.rose': 'Rose',
 }
 
 type Key = keyof typeof en
@@ -214,6 +231,16 @@ const uk: Dict = {
   'composer.yourMessage': 'Ваше повідомлення',
   'composer.messagePlaceholder': 'Будьте конкретні — що вони зробили і чому це важливо?',
   'composer.cardStyle': 'Стиль картки',
+  'composer.textColor': 'Колір тексту',
+  'composer.gif': 'GIF',
+  'composer.gifAdd': 'Додати GIF',
+  'composer.gifChange': 'Змінити GIF',
+  'composer.gifRemove': 'Прибрати GIF',
+  'composer.gifSearch': 'Пошук GIF',
+  'composer.gifSearchPlaceholder': 'Настрій, танець, обличчя…',
+  'composer.gifLoading': 'Завантажуємо GIF…',
+  'composer.gifEmpty': 'Нічого не знайдено.',
+  'composer.gifError': 'Не вдалося завантажити GIF.',
   'composer.preview': 'Попередній перегляд',
   'composer.previewPlaceholder': 'Тут з’являться ваші слова вдячності.',
   'composer.postedPublicly': 'Публікується на командній стіні.',
@@ -237,6 +264,13 @@ const uk: Dict = {
   'cardTheme.ocean': 'Океан',
   'cardTheme.orchid': 'Орхідея',
   'cardTheme.forest': 'Ліс',
+
+  'color.default': 'Стандартний',
+  'color.violet': 'Фіолетовий',
+  'color.blue': 'Синій',
+  'color.emerald': 'Смарагдовий',
+  'color.amber': 'Бурштиновий',
+  'color.rose': 'Рожевий',
 }
 
 const es: Dict = {
@@ -323,6 +357,16 @@ const es: Dict = {
   'composer.yourMessage': 'Tu mensaje',
   'composer.messagePlaceholder': 'Sé concreto: ¿qué hicieron y por qué importó?',
   'composer.cardStyle': 'Estilo de tarjeta',
+  'composer.textColor': 'Color del texto',
+  'composer.gif': 'GIF',
+  'composer.gifAdd': 'Añadir un GIF',
+  'composer.gifChange': 'Cambiar GIF',
+  'composer.gifRemove': 'Quitar GIF',
+  'composer.gifSearch': 'Buscar GIF',
+  'composer.gifSearchPlaceholder': 'Un gesto, un baile, una cara…',
+  'composer.gifLoading': 'Cargando GIF…',
+  'composer.gifEmpty': 'Ningún GIF coincide con esa búsqueda.',
+  'composer.gifError': 'No se pudieron cargar los GIF.',
   'composer.preview': 'Vista previa',
   'composer.previewPlaceholder': 'Tus palabras de agradecimiento aparecerán aquí.',
   'composer.postedPublicly': 'Se publica en el muro del equipo.',
@@ -346,6 +390,13 @@ const es: Dict = {
   'cardTheme.ocean': 'Océano',
   'cardTheme.orchid': 'Orquídea',
   'cardTheme.forest': 'Bosque',
+
+  'color.default': 'Predeterminado',
+  'color.violet': 'Violeta',
+  'color.blue': 'Azul',
+  'color.emerald': 'Esmeralda',
+  'color.amber': 'Ámbar',
+  'color.rose': 'Rosa',
 }
 
 const de: Dict = {
@@ -432,6 +483,16 @@ const de: Dict = {
   'composer.yourMessage': 'Deine Nachricht',
   'composer.messagePlaceholder': 'Sei konkret — was haben sie getan und warum war es wichtig?',
   'composer.cardStyle': 'Kartenstil',
+  'composer.textColor': 'Textfarbe',
+  'composer.gif': 'GIF',
+  'composer.gifAdd': 'GIF hinzufügen',
+  'composer.gifChange': 'GIF ändern',
+  'composer.gifRemove': 'GIF entfernen',
+  'composer.gifSearch': 'GIFs suchen',
+  'composer.gifSearchPlaceholder': 'Ein Gefühl, ein Tanz, ein Gesicht…',
+  'composer.gifLoading': 'GIFs werden geladen…',
+  'composer.gifEmpty': 'Kein GIF passt zu dieser Suche.',
+  'composer.gifError': 'GIFs konnten nicht geladen werden.',
   'composer.preview': 'Vorschau',
   'composer.previewPlaceholder': 'Hier erscheinen deine Worte der Anerkennung.',
   'composer.postedPublicly': 'Wird öffentlich an der Team-Wand veröffentlicht.',
@@ -456,6 +517,13 @@ const de: Dict = {
   'cardTheme.ocean': 'Ozean',
   'cardTheme.orchid': 'Orchidee',
   'cardTheme.forest': 'Wald',
+
+  'color.default': 'Standard',
+  'color.violet': 'Violett',
+  'color.blue': 'Blau',
+  'color.emerald': 'Smaragd',
+  'color.amber': 'Bernstein',
+  'color.rose': 'Rosé',
 }
 
 const DICTS: Record<Lang, Dict> = { en, uk, es, de }

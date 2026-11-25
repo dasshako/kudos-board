@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, Search, X } from 'lucide-react'
 import Avatar from './Avatar'
-import { BADGES, THEMES, recipientLine } from '../lib/meta'
+import GifPicker from './GifPicker'
+import { BADGES, TEXT_COLORS, THEMES, recipientLine, textColorOf } from '../lib/meta'
 import { useI18n } from '../lib/i18n'
 import type { CreateKudosInput } from '../lib/api'
 import type { Person } from '../lib/types'
@@ -20,6 +21,8 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
   const [recipientIds, setRecipientIds] = useState<string[]>([])
   const [badge, setBadge] = useState('teamwork')
   const [theme, setTheme] = useState('sunrise')
+  const [textColor, setTextColor] = useState('default')
+  const [gifUrl, setGifUrl] = useState<string | null>(null)
   const [message, setMessage] = useState('')
   const [query, setQuery] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -30,6 +33,8 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
     setRecipientIds([])
     setBadge('teamwork')
     setTheme('sunrise')
+    setTextColor('default')
+    setGifUrl(null)
     setMessage('')
     setQuery('')
     setError(null)
@@ -60,6 +65,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
   const selected = colleagues.filter((person) => recipientIds.includes(person.id))
   const trimmed = message.trim()
   const valid = recipientIds.length > 0 && trimmed.length >= 10 && trimmed.length <= 500
+  const color = textColorOf(textColor)
 
   function toggleRecipient(id: string) {
     setRecipientIds((current) =>
@@ -76,7 +82,15 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
     setSubmitting(true)
     setError(null)
     try {
-      await onSubmit({ senderId: viewer.id, recipientIds, message: trimmed, badge, theme })
+      await onSubmit({
+        senderId: viewer.id,
+        recipientIds,
+        message: trimmed,
+        badge,
+        theme,
+        textColor,
+        gifUrl,
+      })
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : t('composer.errorGeneric'))
       setSubmitting(false)
@@ -267,23 +281,60 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                 </div>
               </section>
 
+              <section>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mist/80">
+                  {t('composer.textColor')}
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {TEXT_COLORS.map((item) => {
+                    const active = textColor === item.id
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setTextColor(item.id)}
+                        aria-pressed={active}
+                        aria-label={t(`color.${item.id}`)}
+                        title={t(`color.${item.id}`)}
+                        className={`focus-ring grid h-9 w-9 place-items-center rounded-full border transition ${
+                          active
+                            ? 'border-line/40 ring-2 ring-amber-500/50 dark:border-white/40 dark:ring-white/50'
+                            : 'border-line/10 hover:border-line/30'
+                        }`}
+                      >
+                        <span className={`h-5 w-5 rounded-full ${item.swatch}`} />
+                      </button>
+                    )
+                  })}
+                </div>
+              </section>
+
+              <GifPicker value={gifUrl} onChange={setGifUrl} />
+
               <section aria-live="polite" className="rounded-2xl border border-line/10 bg-line/[0.03] p-3">
                 <p className="text-[10px] uppercase tracking-[0.16em] text-mist/70">
                   {t('composer.preview')}
                 </p>
-                <div className="mt-2 flex items-center gap-2 text-[13px]">
+                <div className={`mt-2 flex items-center gap-2 text-[13px] ${color.text}`}>
                   <Avatar person={viewer} size={24} />
-                  <span className="text-mist">
-                    <span className="text-fg">{viewer.name.split(' ')[0]}</span>{' '}
+                  <span>
+                    <span className="font-medium">{viewer.name.split(' ')[0]}</span>{' '}
                     {t('card.celebrated')}{' '}
-                    <span className="text-fg">
+                    <span className="font-medium">
                       {selected.length ? recipientLine(selected, t('common.and')) : '…'}
                     </span>
                   </span>
                 </div>
-                <p className="font-display mt-2 line-clamp-3 text-[15px] leading-relaxed text-fg/90">
+                <p className={`font-display mt-2 line-clamp-3 text-[15px] leading-relaxed ${color.body}`}>
                   {trimmed || t('composer.previewPlaceholder')}
                 </p>
+                {gifUrl && (
+                  <img
+                    src={gifUrl}
+                    alt=""
+                    className="mt-2 max-h-28 rounded-lg border border-line/10"
+                  />
+                )}
               </section>
             </div>
 

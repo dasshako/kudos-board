@@ -2,6 +2,7 @@ import express from 'express'
 import {
   BADGES,
   EMOJI,
+  TEXT_COLORS,
   THEMES,
   createKudos,
   getKudos,
@@ -11,6 +12,7 @@ import {
   personExists,
   toggleReaction,
 } from './db.js'
+import { searchGifs } from './gifs.js'
 
 const app = express()
 const PORT = Number(process.env.PORT || 8000)
@@ -42,8 +44,42 @@ app.get('/api/stats', (_req, res) => {
   res.json(getStats())
 })
 
+app.get('/api/gifs/search', async (req, res, next) => {
+  const q = typeof req.query.q === 'string' ? req.query.q : ''
+  try {
+    res.json(await searchGifs(q))
+  } catch (error) {
+    next(error)
+  }
+})
+
+// A kudos may carry a GIF from the picker: either none at all, or a link served
+// by the providers we search (Giphy, Tenor).
+function readGifUrl(value) {
+  if (value == null || value === '') return { url: null }
+  if (typeof value !== 'string' || value.length > 500) return { error: true }
+
+  let parsed
+  try {
+    parsed = new URL(value.trim())
+  } catch {
+    return { error: true }
+  }
+
+  if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') return { error: true }
+
+  const host = parsed.hostname.toLowerCase()
+  const allowed =
+    host === 'giphy.com' ||
+    host.endsWith('.giphy.com') ||
+    host === 'tenor.com' ||
+    host.endsWith('.tenor.com')
+
+  return allowed ? { url: parsed.toString() } : { error: true }
+}
+
 app.post('/api/kudos', (req, res) => {
-  const { senderId, recipientIds, message, badge, theme } = req.body || {}
+  const { senderId, recipientIds, message, badge, theme, textColor, gifUrl } = req.body || {}
 
   if (!senderId || !personExists(senderId)) {
     return res.status(400).json({ error: 'Pick who you are before sending kudos.' })
@@ -61,6 +97,16 @@ app.post('/api/kudos', (req, res) => {
     return res.status(400).json({ error: 'Choose a card style for this kudos.' })
   }
 
+  const color = textColor == null || textColor === '' ? 'default' : textColor
+  if (!TEXT_COLORS.includes(color)) {
+    return res.status(400).json({ error: 'Choose a text colour from the palette.' })
+  }
+
+  const gif = readGifUrl(gifUrl)
+  if (gif.error) {
+    return res.status(400).json({ error: 'That GIF could not be added. Pick one from the picker.' })
+  }
+
   const text = typeof message === 'string' ? message.trim() : ''
   if (text.length < 10) {
     return res.status(400).json({ error: 'Tell them a little more — at least 10 characters.' })
@@ -75,6 +121,8 @@ app.post('/api/kudos', (req, res) => {
     message: text,
     badge,
     theme,
+    textColor: color,
+    gifUrl: gif.url,
   })
 
   res.status(201).json({ id })
