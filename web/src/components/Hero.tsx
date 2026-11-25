@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Heart, Sparkles, Users } from 'lucide-react'
+import SubscribeButton from './SubscribeButton'
 import { useI18n } from '../lib/i18n'
 import type { Stats } from '../lib/types'
 
@@ -81,6 +82,7 @@ export default function Hero({ stats, onGiveKudos, onSeeSpotlight }: Props) {
               {t('hero.spotlightCta')}
               <ArrowUpRight size={15} />
             </button>
+            <SubscribeButton />
           </motion.div>
         </div>
 

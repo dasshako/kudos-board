@@ -35,6 +35,11 @@ const en = {
   'header.giveKudos': 'Give kudos',
   'header.kudosShort': 'Kudos',
 
+  'subscribe.cta': 'Weekly GIFs',
+  'subscribe.on': 'Subscribed',
+  'subscribe.add': 'Subscribe to weekly GIFs',
+  'subscribe.remove': 'Unsubscribe from weekly GIFs',
+
   'theme.label': 'Theme',
   'theme.light': 'Light',
   'theme.dark': 'Dark',
@@ -164,6 +169,11 @@ const uk: Dict = {
   'header.giveKudos': 'Подякувати',
   'header.kudosShort': 'Дякую',
 
+  'subscribe.cta': 'Щотижневі GIF',
+  'subscribe.on': 'Підписка активна',
+  'subscribe.add': 'Підписатися на щотижневі GIF',
+  'subscribe.remove': 'Скасувати підписку на щотижневі GIF',
+
   'theme.label': 'Тема',
   'theme.light': 'Світла',
   'theme.dark': 'Темна',
@@ -290,6 +300,11 @@ const es: Dict = {
   'header.giveKudos': 'Dar kudos',
   'header.kudosShort': 'Kudos',
 
+  'subscribe.cta': 'GIF semanales',
+  'subscribe.on': 'Suscrito',
+  'subscribe.add': 'Suscribirse a los GIF semanales',
+  'subscribe.remove': 'Cancelar la suscripción a los GIF semanales',
+
   'theme.label': 'Tema',
   'theme.light': 'Claro',
   'theme.dark': 'Oscuro',
@@ -415,6 +430,11 @@ const de: Dict = {
   'header.you': 'Du',
   'header.giveKudos': 'Kudos geben',
   'header.kudosShort': 'Kudos',
+
+  'subscribe.cta': 'Wöchentliche GIFs',
+  'subscribe.on': 'Abonniert',
+  'subscribe.add': 'Wöchentliche GIFs abonnieren',
+  'subscribe.remove': 'Wöchentliche GIFs abbestellen',
 
   'theme.label': 'Design',
   'theme.light': 'Hell',
