@@ -3,12 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#07060f" />
+    <meta name="theme-color" content="#f9f8f5" />
     <meta
       name="description"
       content="A team kudos board to recognise, appreciate and celebrate your colleagues."
     />
     <title>Kudos — celebrate your team</title>
+    <script>
+      // Apply the saved theme before first paint so the page never flashes the wrong palette.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('kudos.theme')
+          var dark = stored
+            ? stored === 'dark'
+            : !window.matchMedia('(prefers-color-scheme: light)').matches
+          if (dark) document.documentElement.classList.add('dark')
+        } catch (error) {
+          /* no stored preference available */
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

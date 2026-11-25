@@ -89,7 +89,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/65 backdrop-blur-sm sm:items-center sm:p-6"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/40 backdrop-blur-sm sm:items-center sm:p-6 dark:bg-black/65"
         >
           <motion.form
             role="dialog"
@@ -101,22 +101,20 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 18, scale: 0.985 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl border border-white/10 bg-[#0d0b1e]/95 shadow-lift sm:rounded-3xl"
+            className="flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl border border-line/10 bg-white/95 shadow-2xl sm:rounded-3xl dark:bg-[#0d0b1e]/95 dark:shadow-lift"
           >
-            <div className="flex items-start justify-between gap-4 border-b border-white/5 px-5 py-4 sm:px-6">
+            <div className="flex items-start justify-between gap-4 border-b border-line/10 px-5 py-4 sm:px-6">
               <div>
                 <h2 id="composer-title" className="text-base font-semibold tracking-tight">
                   Give kudos
                 </h2>
-                <p className="text-xs text-mist">
-                  Say it out loud — the whole team will see it.
-                </p>
+                <p className="text-xs text-mist">Say it out loud — the whole team will see it.</p>
               </div>
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="Close"
-                className="focus-ring rounded-full p-1.5 text-mist transition hover:bg-white/10 hover:text-slate-100"
+                className="focus-ring rounded-full p-1.5 text-mist transition hover:bg-line/10 hover:text-fg"
               >
                 <X size={18} />
               </button>
@@ -128,9 +126,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                   <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mist/80">
                     Who deserves it
                   </p>
-                  <span className="text-[11px] text-mist">
-                    {recipientIds.length} selected
-                  </span>
+                  <span className="text-[11px] text-mist">{recipientIds.length} selected</span>
                 </div>
 
                 <label className="relative mt-2 block">
@@ -144,7 +140,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                     placeholder="Find a teammate…"
-                    className="focus-ring w-full rounded-xl border border-white/10 bg-white/[0.04] py-2 pl-9 pr-3 text-sm placeholder:text-mist/60"
+                    className="field focus-ring w-full rounded-xl py-2 pl-9 pr-3 text-sm"
                   />
                 </label>
 
@@ -164,8 +160,8 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                         aria-pressed={active}
                         className={`focus-ring flex items-center gap-2.5 rounded-xl border px-2.5 py-2 text-left transition ${
                           active
-                            ? 'border-amber-300/50 bg-amber-300/10'
-                            : 'border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.06]'
+                            ? 'border-amber-500/40 bg-amber-100 dark:border-amber-300/50 dark:bg-amber-300/10'
+                            : 'border-line/10 bg-line/[0.03] hover:border-line/25 hover:bg-line/[0.06]'
                         }`}
                       >
                         <Avatar person={person} size={30} />
@@ -173,7 +169,9 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                           <span className="block truncate text-[13px] font-medium">{person.name}</span>
                           <span className="block truncate text-[11px] text-mist">{person.team}</span>
                         </span>
-                        {active && <Check size={15} className="shrink-0 text-amber-300" />}
+                        {active && (
+                          <Check size={15} className="shrink-0 text-amber-600 dark:text-amber-300" />
+                        )}
                       </button>
                     )
                   })}
@@ -195,8 +193,8 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                         aria-pressed={active}
                         className={`focus-ring flex items-center gap-2 rounded-xl border px-2.5 py-2 text-left text-[13px] transition ${
                           active
-                            ? `border-transparent bg-white/[0.09] ring-1 ring-inset ${item.ring}`
-                            : 'border-white/10 bg-white/[0.03] text-mist hover:border-white/25 hover:text-slate-200'
+                            ? `border-transparent bg-line/[0.09] ring-1 ring-inset ${item.ring}`
+                            : 'border-line/10 bg-line/[0.03] text-mist hover:border-line/25 hover:text-fg'
                         }`}
                       >
                         <span aria-hidden="true">{item.emoji}</span>
@@ -217,7 +215,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                   </label>
                   <span
                     className={`text-[11px] tabular-nums ${
-                      message.length > 500 ? 'text-rose-300' : 'text-mist'
+                      message.length > 500 ? 'text-rose-600 dark:text-rose-300' : 'text-mist'
                     }`}
                   >
                     {message.length}/500
@@ -230,7 +228,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                   rows={4}
                   maxLength={520}
                   placeholder="Be specific — what did they do, and why did it matter?"
-                  className="focus-ring mt-2 w-full resize-none rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 text-sm leading-relaxed placeholder:text-mist/60"
+                  className="field focus-ring mt-2 w-full resize-none rounded-xl px-3 py-2.5 text-sm leading-relaxed"
                 />
               </section>
 
@@ -249,13 +247,13 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                         aria-pressed={active}
                         className={`focus-ring flex items-center gap-2 rounded-full border px-2 py-1.5 pr-3 text-xs transition ${
                           active
-                            ? 'border-white/40 bg-white/[0.08] text-slate-100'
-                            : 'border-white/10 text-mist hover:border-white/25'
+                            ? 'border-line/30 bg-line/[0.06] text-fg dark:border-white/40 dark:bg-white/[0.08] dark:text-slate-100'
+                            : 'border-line/10 text-mist hover:border-line/25'
                         }`}
                       >
                         <span
                           className={`h-5 w-5 rounded-full bg-gradient-to-br ${item.line} ${
-                            active ? 'ring-2 ring-white/50' : ''
+                            active ? 'ring-2 ring-amber-500/50 dark:ring-white/50' : ''
                           }`}
                         />
                         {item.label}
@@ -265,38 +263,34 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                 </div>
               </section>
 
-              <section aria-live="polite" className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+              <section aria-live="polite" className="rounded-2xl border border-line/10 bg-line/[0.03] p-3">
                 <p className="text-[10px] uppercase tracking-[0.16em] text-mist/70">Preview</p>
                 <div className="mt-2 flex items-center gap-2 text-[13px]">
                   <Avatar person={viewer} size={24} />
                   <span className="text-mist">
-                    <span className="text-slate-100">{viewer.name.split(' ')[0]}</span> celebrated{' '}
-                    <span className="text-slate-100">
-                      {selected.length ? recipientLine(selected) : '…'}
-                    </span>
+                    <span className="text-fg">{viewer.name.split(' ')[0]}</span> celebrated{' '}
+                    <span className="text-fg">{selected.length ? recipientLine(selected) : '…'}</span>
                   </span>
                 </div>
-                <p className="font-display mt-2 line-clamp-3 text-[15px] leading-relaxed text-slate-100/90">
+                <p className="font-display mt-2 line-clamp-3 text-[15px] leading-relaxed text-fg/90">
                   {trimmed || 'Your words of appreciation will appear here.'}
                 </p>
               </section>
             </div>
 
-            <div className="border-t border-white/5 px-5 py-4 sm:px-6">
+            <div className="border-t border-line/10 px-5 py-4 sm:px-6">
               {error && (
-                <p role="alert" className="mb-2 text-xs text-rose-300">
+                <p role="alert" className="mb-2 text-xs text-rose-600 dark:text-rose-300">
                   {error}
                 </p>
               )}
               <div className="flex items-center justify-between gap-3">
-                <p className="hidden text-[11px] text-mist sm:block">
-                  Posted publicly to the team wall.
-                </p>
+                <p className="hidden text-[11px] text-mist sm:block">Posted publicly to the team wall.</p>
                 <div className="flex items-center gap-2 sm:ml-auto">
                   <button
                     type="button"
                     onClick={onClose}
-                    className="focus-ring rounded-full border border-white/10 px-4 py-2.5 text-sm text-mist transition hover:border-white/25 hover:text-slate-200"
+                    className="focus-ring rounded-full border border-line/10 px-4 py-2.5 text-sm text-mist transition hover:border-line/25 hover:text-fg"
                   >
                     Cancel
                   </button>

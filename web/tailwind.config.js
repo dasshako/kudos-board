@@ -1,11 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        ink: '#07060f',
-        mist: '#a5a3c0',
+        ink: 'rgb(var(--ink) / <alpha-value>)',
+        fg: 'rgb(var(--fg) / <alpha-value>)',
+        mist: 'rgb(var(--mist) / <alpha-value>)',
+        line: 'rgb(var(--line) / <alpha-value>)',
       },
       boxShadow: {
         glow: '0 0 0 1px rgba(255,255,255,0.06), 0 24px 60px -24px rgba(0,0,0,0.85)',

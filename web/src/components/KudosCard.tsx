@@ -24,7 +24,7 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: Math.min(index * 0.045, 0.27), ease: [0.22, 1, 0.36, 1] }}
       className={`glass card-hover relative overflow-hidden ${
-        highlighted ? 'ring-1 ring-amber-300/60' : ''
+        highlighted ? 'ring-1 ring-amber-500/60 dark:ring-amber-300/60' : ''
       }`}
     >
       <div className={`h-1 w-full bg-gradient-to-r ${theme.line}`} />
@@ -40,7 +40,7 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
             <Avatar person={kudos.sender} size={40} />
             <div className="min-w-0">
               <p className="truncate text-[13px] text-mist">
-                <span className="font-medium text-slate-100">{kudos.sender.name}</span> celebrated
+                <span className="font-medium text-fg">{kudos.sender.name}</span> celebrated
               </p>
               <p className="truncate text-[15px] font-semibold tracking-tight">
                 {recipientLine(kudos.recipients)}
@@ -50,9 +50,7 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
           <BadgePill id={kudos.badge} />
         </div>
 
-        <p className="font-display mt-4 text-[17px] leading-relaxed text-slate-100/95">
-          {kudos.message}
-        </p>
+        <p className="font-display mt-4 text-[17px] leading-relaxed text-fg/95">{kudos.message}</p>
 
         <div className="mt-4 flex items-center gap-2.5">
           <div className="flex -space-x-2">
@@ -64,7 +62,7 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
           <span className="ml-auto shrink-0 text-xs text-mist/70">{timeAgo(kudos.createdAt)}</span>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-white/5 pt-4">
+        <div className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-line/10 pt-4">
           {kudos.reactions.map((reaction) => (
             <motion.button
               key={reaction.emoji}
@@ -75,8 +73,8 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
               onClick={() => onReact(kudos.id, reaction.emoji)}
               className={`focus-ring inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition ${
                 reaction.mine
-                  ? 'border-amber-300/50 bg-amber-300/15 text-amber-100'
-                  : 'border-white/10 bg-white/[0.04] text-mist hover:border-white/25 hover:text-slate-100'
+                  ? 'reaction-active'
+                  : 'border-line/10 bg-line/[0.04] text-mist hover:border-line/25 hover:text-fg'
               }`}
             >
               <span aria-hidden="true">{reaction.emoji}</span>
@@ -90,7 +88,7 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
               onClick={() => setTrayOpen((value) => !value)}
               aria-expanded={trayOpen}
               aria-label="Add a reaction"
-              className="focus-ring inline-flex items-center gap-1 rounded-full border border-dashed border-white/15 px-2.5 py-1 text-xs text-mist transition hover:border-white/30 hover:text-slate-100"
+              className="focus-ring inline-flex items-center gap-1 rounded-full border border-dashed border-line/20 px-2.5 py-1 text-xs text-mist transition hover:border-line/40 hover:text-fg"
             >
               <Plus size={13} />
               React
@@ -99,7 +97,7 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
             {trayOpen && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setTrayOpen(false)} />
-                <div className="absolute bottom-full right-0 z-20 mb-2 flex gap-0.5 rounded-full border border-white/10 bg-[#100e22]/95 p-1 shadow-lift backdrop-blur-xl">
+                <div className="popover absolute bottom-full right-0 z-20 mb-2 flex gap-0.5 rounded-full p-1">
                   {EMOJI.map((emoji) => (
                     <button
                       key={emoji}
@@ -108,7 +106,7 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
                         onReact(kudos.id, emoji)
                         setTrayOpen(false)
                       }}
-                      className="grid h-8 w-8 place-items-center rounded-full text-base transition hover:bg-white/10 active:scale-90"
+                      className="grid h-8 w-8 place-items-center rounded-full text-base transition hover:bg-line/10 active:scale-90"
                       aria-label={`React with ${emoji}`}
                     >
                       {emoji}

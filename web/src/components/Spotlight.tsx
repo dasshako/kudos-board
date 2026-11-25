@@ -13,7 +13,7 @@ export default function Spotlight({ stats }: { stats: Stats | null }) {
     <aside id="spotlight" className="space-y-4 lg:sticky lg:top-24">
       <div className="glass p-5">
         <div className="flex items-center gap-2">
-          <span className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-amber-300/25 to-rose-400/25 text-amber-200 ring-1 ring-inset ring-white/10">
+          <span className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-amber-200/80 to-rose-200/80 text-amber-700 ring-1 ring-inset ring-line/10 dark:from-amber-300/25 dark:to-rose-400/25 dark:text-amber-200">
             <Trophy size={15} />
           </span>
           <div>
@@ -24,7 +24,7 @@ export default function Spotlight({ stats }: { stats: Stats | null }) {
 
         <ol className="mt-4 space-y-3">
           {leaderboard.length === 0 && (
-            <li className="rounded-xl border border-dashed border-white/10 px-3 py-4 text-center text-xs text-mist">
+            <li className="rounded-xl border border-dashed border-line/15 px-3 py-4 text-center text-xs text-mist">
               No kudos yet — the spotlight is wide open.
             </li>
           )}
@@ -32,7 +32,7 @@ export default function Spotlight({ stats }: { stats: Stats | null }) {
             <li key={entry.id} className="flex items-center gap-3">
               <span
                 className={`w-4 shrink-0 text-center text-xs font-semibold tabular-nums ${
-                  index === 0 ? 'text-amber-300' : 'text-mist/60'
+                  index === 0 ? 'text-amber-600 dark:text-amber-300' : 'text-mist/60'
                 }`}
               >
                 {index + 1}
@@ -45,7 +45,7 @@ export default function Spotlight({ stats }: { stats: Stats | null }) {
                     {entry.received}
                   </span>
                 </div>
-                <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/[0.07]">
+                <div className="track mt-1 h-1.5 overflow-hidden rounded-full">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-amber-300 to-rose-400"
                     style={{ width: `${Math.max(6, (entry.received / max) * 100)}%` }}
@@ -71,14 +71,14 @@ export default function Spotlight({ stats }: { stats: Stats | null }) {
             return (
               <li key={item.badge}>
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-200">
+                  <span className="text-fg">
                     <span aria-hidden="true">{badge.emoji}</span> {badge.label}
                   </span>
                   <span className="tabular-nums text-mist">{item.count}</span>
                 </div>
-                <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/[0.07]">
+                <div className="track mt-1.5 h-1.5 overflow-hidden rounded-full">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-violet-400/80 to-sky-400/80"
+                    className="h-full rounded-full bg-gradient-to-r from-violet-500 to-sky-500 dark:from-violet-400/80 dark:to-sky-400/80"
                     style={{ width: `${Math.max(6, (item.count / categoryTotal) * 100)}%` }}
                   />
                 </div>
@@ -88,8 +88,8 @@ export default function Spotlight({ stats }: { stats: Stats | null }) {
         </ul>
       </div>
 
-      <div className="rounded-3xl border border-amber-300/20 bg-gradient-to-br from-amber-300/[0.09] to-rose-400/[0.05] p-5">
-        <p className="font-display text-[15px] leading-relaxed text-slate-100/90">
+      <div className="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-100/80 to-rose-100/60 p-5 dark:border-amber-300/20 dark:from-amber-300/[0.09] dark:to-rose-400/[0.05]">
+        <p className="font-display text-[15px] leading-relaxed text-fg/90">
           “People will forget what you said, forget what you did, but never forget how you made
           them feel.”
         </p>

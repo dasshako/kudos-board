@@ -187,7 +187,7 @@ export default function App() {
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="mt-4 rounded-full bg-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white/20"
+            className="mt-4 rounded-full bg-line/10 px-4 py-2 text-sm font-medium transition hover:bg-line/20"
           >
             Try again
           </button>
@@ -235,7 +235,7 @@ export default function App() {
           <Spotlight stats={stats} />
         </div>
 
-        <footer className="mt-12 flex flex-wrap items-center justify-between gap-2 border-t border-white/5 pt-5 text-[11px] text-mist/60">
+        <footer className="mt-12 flex flex-wrap items-center justify-between gap-2 border-t border-line/10 pt-5 text-[11px] text-mist/60">
           <p>Kudos · built for teams who say thanks out loud.</p>
           <p>Updates every few seconds — no refresh needed.</p>
         </footer>
@@ -261,10 +261,10 @@ export default function App() {
           >
             <div
               role="status"
-              className={`flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm shadow-lift backdrop-blur-xl ${
+              className={`flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm shadow-xl backdrop-blur-xl dark:shadow-lift ${
                 toast.kind === 'success'
-                  ? 'border-emerald-300/30 bg-emerald-400/15 text-emerald-100'
-                  : 'border-rose-300/30 bg-rose-400/15 text-rose-100'
+                  ? 'border-emerald-600/25 bg-emerald-50 text-emerald-800 dark:border-emerald-300/30 dark:bg-emerald-400/15 dark:text-emerald-100'
+                  : 'border-rose-600/25 bg-rose-50 text-rose-800 dark:border-rose-300/30 dark:bg-rose-400/15 dark:text-rose-100'
               }`}
             >
               {toast.kind === 'success' ? <Check size={15} /> : <AlertTriangle size={15} />}

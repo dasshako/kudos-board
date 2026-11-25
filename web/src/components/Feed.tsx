@@ -40,7 +40,7 @@ export default function Feed({
         <div
           role="group"
           aria-label="Sort kudos"
-          className="inline-flex rounded-full border border-white/10 bg-white/[0.04] p-1"
+          className="inline-flex rounded-full border border-line/10 bg-line/[0.04] p-1"
         >
           {SORTS.map((sort) => (
             <button
@@ -50,8 +50,8 @@ export default function Feed({
               aria-pressed={filters.sort === sort.id}
               className={`focus-ring rounded-full px-3 py-1.5 text-xs font-medium transition ${
                 filters.sort === sort.id
-                  ? 'bg-white/10 text-slate-100 shadow-sm'
-                  : 'text-mist hover:text-slate-200'
+                  ? 'bg-white text-fg shadow-sm dark:bg-white/10 dark:text-slate-100'
+                  : 'text-mist hover:text-fg'
               }`}
             >
               {sort.label}
@@ -72,7 +72,7 @@ export default function Feed({
             value={filters.q}
             onChange={(event) => onChange({ q: event.target.value })}
             placeholder="Search a name or a word…"
-            className="focus-ring w-full rounded-full border border-white/10 bg-white/[0.04] py-2.5 pl-10 pr-4 text-sm text-slate-100 placeholder:text-mist/60 transition hover:border-white/20 focus:border-amber-300/40"
+            className="field focus-ring w-full rounded-full py-2.5 pl-10 pr-4 text-sm transition hover:border-line/25 focus:border-amber-400/60"
           />
         </label>
 
@@ -133,9 +133,7 @@ function FilterChip({
       onClick={onClick}
       aria-pressed={active}
       className={`focus-ring shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-        active
-          ? 'border-amber-300/50 bg-amber-300/15 text-amber-100'
-          : 'border-white/10 bg-white/[0.03] text-mist hover:border-white/25 hover:text-slate-200'
+        active ? 'chip-active' : 'chip-idle'
       }`}
     >
       {label}
@@ -148,17 +146,17 @@ function SkeletonList() {
     <div className="space-y-4">
       {[0, 1, 2].map((index) => (
         <div key={index} className="glass overflow-hidden">
-          <div className="h-1 w-full animate-shimmer bg-gradient-to-r from-white/10 via-white/25 to-white/10 bg-[length:200%_100%]" />
+          <div className="h-1 w-full animate-shimmer bg-gradient-to-r from-line/10 via-line/25 to-line/10 bg-[length:200%_100%]" />
           <div className="space-y-3 p-6">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-white/10" />
+              <div className="h-10 w-10 rounded-full bg-line/10" />
               <div className="space-y-2">
-                <div className="h-3 w-32 rounded-full bg-white/10" />
-                <div className="h-3 w-24 rounded-full bg-white/5" />
+                <div className="h-3 w-32 rounded-full bg-line/10" />
+                <div className="h-3 w-24 rounded-full bg-line/5" />
               </div>
             </div>
-            <div className="h-3 w-full rounded-full bg-white/5" />
-            <div className="h-3 w-4/5 rounded-full bg-white/5" />
+            <div className="h-3 w-full rounded-full bg-line/5" />
+            <div className="h-3 w-4/5 rounded-full bg-line/5" />
           </div>
         </div>
       ))}
@@ -169,7 +167,7 @@ function SkeletonList() {
 function EmptyState({ onGiveKudos, hasFilters }: { onGiveKudos: () => void; hasFilters: boolean }) {
   return (
     <div className="glass flex flex-col items-center px-6 py-14 text-center">
-      <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-amber-300/20 to-rose-400/20 text-amber-200 ring-1 ring-inset ring-white/10">
+      <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-amber-200/80 to-rose-200/80 text-amber-700 ring-1 ring-inset ring-line/10 dark:from-amber-300/20 dark:to-rose-400/20 dark:text-amber-200">
         <Sparkles size={24} />
       </span>
       <h3 className="mt-4 text-base font-semibold">
