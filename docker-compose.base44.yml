@@ -1,0 +1,79 @@
+name: kudos-board
+
+# Development stack: both services run from the bind-mounted source with live reload.
+# Source is mounted at /workspace; dependency folders live in named volumes so the
+# host checkout stays clean and installs survive container restarts.
+
+services:
+  api:
+    image: node:22-bookworm
+    working_dir: /workspace/api
+    restart: on-failure
+    environment:
+      - PORT=8000
+      - DB_PATH=/data/kudos.db
+      - NODE_ENV=development
+    volumes:
+      - ${BASE44_PROJECT_ROOT}:/workspace
+      - api_node_modules:/workspace/api/node_modules
+      - kudos_data:/data
+    command:
+      - sh
+      - -ec
+      - |
+        npm install --no-audit --no-fund
+        exec node --watch src/index.js
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8000/api/health').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 45s
+
+  web:
+    image: node:22-bookworm
+    working_dir: /workspace/web
+    restart: on-failure
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      - API_URL=http://api:8000
+      # Sandbox-provided; passed through so Vite accepts the preview host/origin.
+      - BASE44_PREVIEW_MODE
+      - BASE44_SANDBOX_HOST_DOMAIN
+      - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
+    volumes:
+      - ${BASE44_PROJECT_ROOT}:/workspace
+      - web_node_modules:/workspace/web/node_modules
+    command:
+      - sh
+      - -ec
+      - |
+        npm install --no-audit --no-fund
+        exec npm run dev -- --host 0.0.0.0 --port 3000
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 60s
+
+volumes:
+  api_node_modules:
+  web_node_modules:
+  kudos_data:
