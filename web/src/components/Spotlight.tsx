@@ -1,9 +1,11 @@
 import { Trophy } from 'lucide-react'
 import Avatar from './Avatar'
 import { BADGE_BY_ID } from '../lib/meta'
+import { useI18n } from '../lib/i18n'
 import type { Stats } from '../lib/types'
 
 export default function Spotlight({ stats }: { stats: Stats | null }) {
+  const { t } = useI18n()
   const leaderboard = stats?.leaderboard ?? []
   const max = Math.max(1, ...leaderboard.map((entry) => entry.received))
   const categories = stats?.categories ?? []
@@ -17,15 +19,15 @@ export default function Spotlight({ stats }: { stats: Stats | null }) {
             <Trophy size={15} />
           </span>
           <div>
-            <h2 className="text-sm font-semibold tracking-tight">Spotlight</h2>
-            <p className="text-[11px] text-mist">Most appreciated, all time</p>
+            <h2 className="text-sm font-semibold tracking-tight">{t('spotlight.title')}</h2>
+            <p className="text-[11px] text-mist">{t('spotlight.subtitle')}</p>
           </div>
         </div>
 
         <ol className="mt-4 space-y-3">
           {leaderboard.length === 0 && (
             <li className="rounded-xl border border-dashed border-line/15 px-3 py-4 text-center text-xs text-mist">
-              No kudos yet — the spotlight is wide open.
+              {t('spotlight.empty')}
             </li>
           )}
           {leaderboard.map((entry, index) => (
@@ -58,12 +60,12 @@ export default function Spotlight({ stats }: { stats: Stats | null }) {
       </div>
 
       <div className="glass p-5">
-        <h2 className="text-sm font-semibold tracking-tight">What we celebrate</h2>
-        <p className="text-[11px] text-mist">Kudos by badge</p>
+        <h2 className="text-sm font-semibold tracking-tight">{t('spotlight.categoriesTitle')}</h2>
+        <p className="text-[11px] text-mist">{t('spotlight.categoriesSubtitle')}</p>
 
         <ul className="mt-4 space-y-2.5">
           {categories.length === 0 && (
-            <li className="text-xs text-mist">Nothing yet — the first kudos sets the tone.</li>
+            <li className="text-xs text-mist">{t('spotlight.categoriesEmpty')}</li>
           )}
           {categories.map((item) => {
             const badge = BADGE_BY_ID[item.badge]
@@ -72,7 +74,7 @@ export default function Spotlight({ stats }: { stats: Stats | null }) {
               <li key={item.badge}>
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-fg">
-                    <span aria-hidden="true">{badge.emoji}</span> {badge.label}
+                    <span aria-hidden="true">{badge.emoji}</span> {t(`badge.${badge.id}`)}
                   </span>
                   <span className="tabular-nums text-mist">{item.count}</span>
                 </div>
@@ -90,10 +92,11 @@ export default function Spotlight({ stats }: { stats: Stats | null }) {
 
       <div className="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-100/80 to-rose-100/60 p-5 dark:border-amber-300/20 dark:from-amber-300/[0.09] dark:to-rose-400/[0.05]">
         <p className="font-display text-[15px] leading-relaxed text-fg/90">
-          “People will forget what you said, forget what you did, but never forget how you made
-          them feel.”
+          {t('spotlight.quote')}
         </p>
-        <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-mist/70">Maya Angelou</p>
+        <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-mist/70">
+          {t('spotlight.quoteAuthor')}
+        </p>
       </div>
     </aside>
   )

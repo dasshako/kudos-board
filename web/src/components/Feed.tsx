@@ -1,6 +1,7 @@
 import { Search, SlidersHorizontal, Sparkles } from 'lucide-react'
 import KudosCard from './KudosCard'
 import { BADGES } from '../lib/meta'
+import { useI18n } from '../lib/i18n'
 import type { Filters, Kudos, Sort } from '../lib/types'
 
 type Props = {
@@ -13,9 +14,9 @@ type Props = {
   onGiveKudos: () => void
 }
 
-const SORTS: { id: Sort; label: string }[] = [
-  { id: 'new', label: 'Newest' },
-  { id: 'top', label: 'Most loved' },
+const SORTS: { id: Sort; labelKey: string }[] = [
+  { id: 'new', labelKey: 'feed.sortNew' },
+  { id: 'top', labelKey: 'feed.sortTop' },
 ]
 
 export default function Feed({
@@ -27,19 +28,21 @@ export default function Feed({
   highlightId,
   onGiveKudos,
 }: Props) {
+  const { t } = useI18n()
+
   return (
-    <section aria-label="Kudos wall" className="min-w-0">
+    <section aria-label={t('feed.title')} className="min-w-0">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold tracking-tight">The wall</h2>
+          <h2 className="text-lg font-semibold tracking-tight">{t('feed.title')}</h2>
           <p className="text-sm text-mist">
-            {loading ? 'Gathering the latest…' : `${kudos.length} in view`}
+            {loading ? t('feed.loading') : t('feed.count', { count: kudos.length })}
           </p>
         </div>
 
         <div
           role="group"
-          aria-label="Sort kudos"
+          aria-label={t('feed.sortGroup')}
           className="inline-flex rounded-full border border-line/10 bg-line/[0.04] p-1"
         >
           {SORTS.map((sort) => (
@@ -54,7 +57,7 @@ export default function Feed({
                   : 'text-mist hover:text-fg'
               }`}
             >
-              {sort.label}
+              {t(sort.labelKey)}
             </button>
           ))}
         </div>
@@ -62,7 +65,7 @@ export default function Feed({
 
       <div className="mt-4 flex flex-col gap-3">
         <label className="relative block">
-          <span className="sr-only">Search kudos by teammate or message</span>
+          <span className="sr-only">{t('feed.searchLabel')}</span>
           <Search
             size={16}
             className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-mist/70"
@@ -71,7 +74,7 @@ export default function Feed({
             type="search"
             value={filters.q}
             onChange={(event) => onChange({ q: event.target.value })}
-            placeholder="Search a name or a word…"
+            placeholder={t('feed.searchPlaceholder')}
             className="field focus-ring w-full rounded-full py-2.5 pl-10 pr-4 text-sm transition hover:border-line/25 focus:border-amber-400/60"
           />
         </label>
@@ -79,19 +82,19 @@ export default function Feed({
         <div className="no-scrollbar -mx-1 flex items-center gap-1.5 overflow-x-auto px-1 pb-1">
           <span className="mr-1 hidden shrink-0 items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-mist/70 sm:flex">
             <SlidersHorizontal size={12} />
-            Filter
+            {t('feed.filter')}
           </span>
           <FilterChip
             active={filters.badge === 'all'}
             onClick={() => onChange({ badge: 'all' })}
-            label="All"
+            label={t('feed.all')}
           />
           {BADGES.map((badge) => (
             <FilterChip
               key={badge.id}
               active={filters.badge === badge.id}
               onClick={() => onChange({ badge: badge.id })}
-              label={`${badge.emoji} ${badge.label}`}
+              label={`${badge.emoji} ${t(`badge.${badge.id}`)}`}
             />
           ))}
         </div>
@@ -165,25 +168,25 @@ function SkeletonList() {
 }
 
 function EmptyState({ onGiveKudos, hasFilters }: { onGiveKudos: () => void; hasFilters: boolean }) {
+  const { t } = useI18n()
+
   return (
     <div className="glass flex flex-col items-center px-6 py-14 text-center">
       <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-amber-200/80 to-rose-200/80 text-amber-700 ring-1 ring-inset ring-line/10 dark:from-amber-300/20 dark:to-rose-400/20 dark:text-amber-200">
         <Sparkles size={24} />
       </span>
       <h3 className="mt-4 text-base font-semibold">
-        {hasFilters ? 'Nothing matches that yet' : 'The wall is waiting for its first kudos'}
+        {hasFilters ? t('feed.emptyFilteredTitle') : t('feed.emptyTitle')}
       </h3>
       <p className="mt-1.5 max-w-sm text-sm text-mist">
-        {hasFilters
-          ? 'Try a different badge or clear the search to see the whole wall.'
-          : 'Be the first to make someone’s day — a few honest words go a long way.'}
+        {hasFilters ? t('feed.emptyFilteredBody') : t('feed.emptyBody')}
       </p>
       <button
         type="button"
         onClick={onGiveKudos}
         className="focus-ring mt-5 rounded-full bg-gradient-to-r from-amber-300 to-rose-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:brightness-110"
       >
-        Give kudos
+        {t('feed.giveKudos')}
       </button>
     </div>
   )

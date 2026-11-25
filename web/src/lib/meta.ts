@@ -1,3 +1,5 @@
+import type { Translate } from './i18n'
+
 export const ACCENTS: Record<string, string> = {
   amber: 'from-amber-300 to-orange-500',
   violet: 'from-violet-400 to-indigo-600',
@@ -120,22 +122,22 @@ export function initials(name: string) {
     .toUpperCase()
 }
 
-export function timeAgo(iso: string) {
+export function timeAgo(iso: string, t: Translate, locale: string) {
   const diff = Date.now() - new Date(iso).getTime()
   const minutes = Math.round(diff / 60000)
-  if (minutes < 1) return 'just now'
-  if (minutes < 60) return `${minutes}m ago`
+  if (minutes < 1) return t('time.justNow')
+  if (minutes < 60) return t('time.minutes', { count: minutes })
   const hours = Math.round(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
+  if (hours < 24) return t('time.hours', { count: hours })
   const days = Math.round(hours / 24)
-  if (days < 7) return `${days}d ago`
-  return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+  if (days < 7) return t('time.days', { count: days })
+  return new Date(iso).toLocaleDateString(locale, { month: 'short', day: 'numeric' })
 }
 
-export function recipientLine(recipients: { name: string }[]) {
+export function recipientLine(recipients: { name: string }[], andWord: string) {
   const names = recipients.map((person) => person.name)
   if (names.length === 0) return ''
   if (names.length === 1) return names[0]
-  if (names.length === 2) return `${names[0]} and ${names[1]}`
-  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`
+  if (names.length === 2) return `${names[0]} ${andWord} ${names[1]}`
+  return `${names.slice(0, -1).join(', ')} ${andWord} ${names[names.length - 1]}`
 }

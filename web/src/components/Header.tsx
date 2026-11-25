@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { ChevronDown, Plus, Sparkles } from 'lucide-react'
 import Avatar from './Avatar'
+import LanguagePicker from './LanguagePicker'
 import ThemeToggle from './ThemeToggle'
+import { useI18n } from '../lib/i18n'
 import type { Person } from '../lib/types'
 
 type Props = {
@@ -12,6 +14,7 @@ type Props = {
 }
 
 export default function Header({ people, viewer, onSwitchViewer, onGiveKudos }: Props) {
+  const { t } = useI18n()
   const [open, setOpen] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -34,12 +37,13 @@ export default function Header({ people, viewer, onSwitchViewer, onGiveKudos }: 
           <div className="leading-tight">
             <p className="text-[15px] font-semibold tracking-tight">Kudos</p>
             <p className="hidden text-[11px] uppercase tracking-[0.18em] text-mist/70 sm:block">
-              Team recognition
+              {t('header.tagline')}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <LanguagePicker />
           <ThemeToggle />
 
           <div className="relative" ref={wrapperRef}>
@@ -53,7 +57,7 @@ export default function Header({ people, viewer, onSwitchViewer, onGiveKudos }: 
               <Avatar person={viewer} size={28} />
               <span className="hidden text-left leading-tight sm:block">
                 <span className="block text-[10px] uppercase tracking-[0.14em] text-mist/70">
-                  Viewing as
+                  {t('header.viewingAs')}
                 </span>
                 <span className="block text-[13px] font-medium">{viewer.name}</span>
               </span>
@@ -66,7 +70,7 @@ export default function Header({ people, viewer, onSwitchViewer, onGiveKudos }: 
                 className="popover absolute right-0 top-full z-50 mt-2 max-h-80 w-72 overflow-y-auto p-1.5"
               >
                 <p className="px-3 py-2 text-[11px] uppercase tracking-[0.14em] text-mist/70">
-                  Who are you?
+                  {t('header.whoAreYou')}
                 </p>
                 {people.map((person) => (
                   <button
@@ -89,7 +93,7 @@ export default function Header({ people, viewer, onSwitchViewer, onGiveKudos }: 
                     </span>
                     {person.id === viewer.id && (
                       <span className="text-[10px] font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-300">
-                        You
+                        {t('header.you')}
                       </span>
                     )}
                   </button>
@@ -104,8 +108,8 @@ export default function Header({ people, viewer, onSwitchViewer, onGiveKudos }: 
             className="focus-ring inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-300 to-rose-400 px-3 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-orange-500/25 transition hover:brightness-110 active:scale-[0.98] sm:px-4"
           >
             <Plus size={16} strokeWidth={2.6} />
-            <span className="hidden sm:inline">Give kudos</span>
-            <span className="sm:hidden">Kudos</span>
+            <span className="hidden sm:inline">{t('header.giveKudos')}</span>
+            <span className="sm:hidden">{t('header.kudosShort')}</span>
           </button>
         </div>
       </div>

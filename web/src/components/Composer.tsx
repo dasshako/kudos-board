@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Check, Search, X } from 'lucide-react'
 import Avatar from './Avatar'
 import { BADGES, THEMES, recipientLine } from '../lib/meta'
+import { useI18n } from '../lib/i18n'
 import type { CreateKudosInput } from '../lib/api'
 import type { Person } from '../lib/types'
 
@@ -15,6 +16,7 @@ type Props = {
 }
 
 export default function Composer({ open, people, viewer, onClose, onSubmit }: Props) {
+  const { t } = useI18n()
   const [recipientIds, setRecipientIds] = useState<string[]>([])
   const [badge, setBadge] = useState('teamwork')
   const [theme, setTheme] = useState('sunrise')
@@ -68,7 +70,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
     if (!valid || submitting) {
-      if (!valid) setError('Add a teammate and at least 10 characters to send this kudos.')
+      if (!valid) setError(t('composer.errorInvalid'))
       return
     }
     setSubmitting(true)
@@ -76,7 +78,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
     try {
       await onSubmit({ senderId: viewer.id, recipientIds, message: trimmed, badge, theme })
     } catch (submitError) {
-      setError(submitError instanceof Error ? submitError.message : 'Could not send that kudos.')
+      setError(submitError instanceof Error ? submitError.message : t('composer.errorGeneric'))
       setSubmitting(false)
     }
   }
@@ -106,14 +108,14 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
             <div className="flex items-start justify-between gap-4 border-b border-line/10 px-5 py-4 sm:px-6">
               <div>
                 <h2 id="composer-title" className="text-base font-semibold tracking-tight">
-                  Give kudos
+                  {t('composer.title')}
                 </h2>
-                <p className="text-xs text-mist">Say it out loud — the whole team will see it.</p>
+                <p className="text-xs text-mist">{t('composer.subtitle')}</p>
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Close"
+                aria-label={t('common.close')}
                 className="focus-ring rounded-full p-1.5 text-mist transition hover:bg-line/10 hover:text-fg"
               >
                 <X size={18} />
@@ -124,13 +126,15 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
               <section>
                 <div className="flex items-baseline justify-between">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mist/80">
-                    Who deserves it
+                    {t('composer.whoDeserves')}
                   </p>
-                  <span className="text-[11px] text-mist">{recipientIds.length} selected</span>
+                  <span className="text-[11px] text-mist">
+                    {t('composer.selected', { count: recipientIds.length })}
+                  </span>
                 </div>
 
                 <label className="relative mt-2 block">
-                  <span className="sr-only">Search teammates</span>
+                  <span className="sr-only">{t('composer.searchTeammates')}</span>
                   <Search
                     size={14}
                     className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-mist/70"
@@ -139,7 +143,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                     type="search"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
-                    placeholder="Find a teammate…"
+                    placeholder={t('composer.findPlaceholder')}
                     className="field focus-ring w-full rounded-xl py-2 pl-9 pr-3 text-sm"
                   />
                 </label>
@@ -147,7 +151,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                 <div className="mt-2 grid max-h-52 grid-cols-1 gap-2 overflow-y-auto pr-1 sm:grid-cols-2">
                   {filtered.length === 0 && (
                     <p className="col-span-full py-4 text-center text-xs text-mist">
-                      No teammate matches “{query}”.
+                      {t('composer.noMatch', { query })}
                     </p>
                   )}
                   {filtered.map((person) => {
@@ -180,7 +184,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
 
               <section>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mist/80">
-                  What are you celebrating
+                  {t('composer.whatCelebrating')}
                 </p>
                 <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
                   {BADGES.map((item) => {
@@ -198,7 +202,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                         }`}
                       >
                         <span aria-hidden="true">{item.emoji}</span>
-                        <span className="font-medium">{item.label}</span>
+                        <span className="font-medium">{t(`badge.${item.id}`)}</span>
                       </button>
                     )
                   })}
@@ -211,7 +215,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                     htmlFor="kudos-message"
                     className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mist/80"
                   >
-                    Your message
+                    {t('composer.yourMessage')}
                   </label>
                   <span
                     className={`text-[11px] tabular-nums ${
@@ -227,14 +231,14 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                   onChange={(event) => setMessage(event.target.value)}
                   rows={4}
                   maxLength={520}
-                  placeholder="Be specific — what did they do, and why did it matter?"
+                  placeholder={t('composer.messagePlaceholder')}
                   className="field focus-ring mt-2 w-full resize-none rounded-xl px-3 py-2.5 text-sm leading-relaxed"
                 />
               </section>
 
               <section>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-mist/80">
-                  Card style
+                  {t('composer.cardStyle')}
                 </p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {THEMES.map((item) => {
@@ -256,7 +260,7 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                             active ? 'ring-2 ring-amber-500/50 dark:ring-white/50' : ''
                           }`}
                         />
-                        {item.label}
+                        {t(`cardTheme.${item.id}`)}
                       </button>
                     )
                   })}
@@ -264,16 +268,21 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
               </section>
 
               <section aria-live="polite" className="rounded-2xl border border-line/10 bg-line/[0.03] p-3">
-                <p className="text-[10px] uppercase tracking-[0.16em] text-mist/70">Preview</p>
+                <p className="text-[10px] uppercase tracking-[0.16em] text-mist/70">
+                  {t('composer.preview')}
+                </p>
                 <div className="mt-2 flex items-center gap-2 text-[13px]">
                   <Avatar person={viewer} size={24} />
                   <span className="text-mist">
-                    <span className="text-fg">{viewer.name.split(' ')[0]}</span> celebrated{' '}
-                    <span className="text-fg">{selected.length ? recipientLine(selected) : '…'}</span>
+                    <span className="text-fg">{viewer.name.split(' ')[0]}</span>{' '}
+                    {t('card.celebrated')}{' '}
+                    <span className="text-fg">
+                      {selected.length ? recipientLine(selected, t('common.and')) : '…'}
+                    </span>
                   </span>
                 </div>
                 <p className="font-display mt-2 line-clamp-3 text-[15px] leading-relaxed text-fg/90">
-                  {trimmed || 'Your words of appreciation will appear here.'}
+                  {trimmed || t('composer.previewPlaceholder')}
                 </p>
               </section>
             </div>
@@ -285,21 +294,23 @@ export default function Composer({ open, people, viewer, onClose, onSubmit }: Pr
                 </p>
               )}
               <div className="flex items-center justify-between gap-3">
-                <p className="hidden text-[11px] text-mist sm:block">Posted publicly to the team wall.</p>
+                <p className="hidden text-[11px] text-mist sm:block">
+                  {t('composer.postedPublicly')}
+                </p>
                 <div className="flex items-center gap-2 sm:ml-auto">
                   <button
                     type="button"
                     onClick={onClose}
                     className="focus-ring rounded-full border border-line/10 px-4 py-2.5 text-sm text-mist transition hover:border-line/25 hover:text-fg"
                   >
-                    Cancel
+                    {t('composer.cancel')}
                   </button>
                   <button
                     type="submit"
                     disabled={!valid || submitting}
                     className="focus-ring inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-300 to-rose-400 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-orange-500/25 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
                   >
-                    {submitting ? 'Sending…' : 'Post kudos'}
+                    {submitting ? t('composer.sending') : t('composer.post')}
                   </button>
                 </div>
               </div>

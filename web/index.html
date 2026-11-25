@@ -10,14 +10,17 @@
     />
     <title>Kudos — celebrate your team</title>
     <script>
-      // Apply the saved theme before first paint so the page never flashes the wrong palette.
+      // Apply the saved theme and language before first paint so nothing flashes the wrong palette.
       ;(function () {
         try {
           var stored = localStorage.getItem('kudos.theme')
-          var dark = stored
-            ? stored === 'dark'
-            : !window.matchMedia('(prefers-color-scheme: light)').matches
+          var dark =
+            stored === 'dark' ||
+            (stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)
           if (dark) document.documentElement.classList.add('dark')
+
+          var lang = localStorage.getItem('kudos.lang')
+          if (lang) document.documentElement.lang = lang
         } catch (error) {
           /* no stored preference available */
         }

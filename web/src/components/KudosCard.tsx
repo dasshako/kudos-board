@@ -4,6 +4,7 @@ import { Plus } from 'lucide-react'
 import Avatar from './Avatar'
 import BadgePill from './BadgePill'
 import { EMOJI, THEMES, THEME_BY_ID, recipientLine, timeAgo } from '../lib/meta'
+import { useI18n } from '../lib/i18n'
 import type { Kudos } from '../lib/types'
 
 type Props = {
@@ -14,6 +15,7 @@ type Props = {
 }
 
 export default function KudosCard({ kudos, index, highlighted, onReact }: Props) {
+  const { t, locale } = useI18n()
   const [trayOpen, setTrayOpen] = useState(false)
   const theme = THEME_BY_ID[kudos.theme] ?? THEMES[0]
   const teams = [...new Set(kudos.recipients.map((person) => person.team))]
@@ -40,10 +42,11 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
             <Avatar person={kudos.sender} size={40} />
             <div className="min-w-0">
               <p className="truncate text-[13px] text-mist">
-                <span className="font-medium text-fg">{kudos.sender.name}</span> celebrated
+                <span className="font-medium text-fg">{kudos.sender.name}</span>{' '}
+                {t('card.celebrated')}
               </p>
               <p className="truncate text-[15px] font-semibold tracking-tight">
-                {recipientLine(kudos.recipients)}
+                {recipientLine(kudos.recipients, t('common.and'))}
               </p>
             </div>
           </div>
@@ -59,7 +62,9 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
             ))}
           </div>
           <span className="truncate text-xs text-mist">{teams.join(' · ')}</span>
-          <span className="ml-auto shrink-0 text-xs text-mist/70">{timeAgo(kudos.createdAt)}</span>
+          <span className="ml-auto shrink-0 text-xs text-mist/70">
+            {timeAgo(kudos.createdAt, t, locale)}
+          </span>
         </div>
 
         <div className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-line/10 pt-4">
@@ -69,7 +74,7 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
               type="button"
               whileTap={{ scale: 0.9 }}
               aria-pressed={reaction.mine}
-              aria-label={`React with ${reaction.emoji}, ${reaction.count} so far`}
+              aria-label={t('card.reactWithCount', { emoji: reaction.emoji, count: reaction.count })}
               onClick={() => onReact(kudos.id, reaction.emoji)}
               className={`focus-ring inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition ${
                 reaction.mine
@@ -87,11 +92,11 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
               type="button"
               onClick={() => setTrayOpen((value) => !value)}
               aria-expanded={trayOpen}
-              aria-label="Add a reaction"
+              aria-label={t('card.addReaction')}
               className="focus-ring inline-flex items-center gap-1 rounded-full border border-dashed border-line/20 px-2.5 py-1 text-xs text-mist transition hover:border-line/40 hover:text-fg"
             >
               <Plus size={13} />
-              React
+              {t('card.react')}
             </button>
 
             {trayOpen && (
@@ -107,7 +112,7 @@ export default function KudosCard({ kudos, index, highlighted, onReact }: Props)
                         setTrayOpen(false)
                       }}
                       className="grid h-8 w-8 place-items-center rounded-full text-base transition hover:bg-line/10 active:scale-90"
-                      aria-label={`React with ${emoji}`}
+                      aria-label={t('card.reactWith', { emoji })}
                     >
                       {emoji}
                     </button>

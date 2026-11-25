@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Heart, Sparkles, Users } from 'lucide-react'
+import { useI18n } from '../lib/i18n'
 import type { Stats } from '../lib/types'
 
 type Props = {
@@ -20,6 +21,8 @@ const item = {
 }
 
 export default function Hero({ stats, onGiveKudos, onSeeSpotlight }: Props) {
+  const { t } = useI18n()
+
   return (
     <motion.section
       variants={container}
@@ -43,23 +46,22 @@ export default function Hero({ stats, onGiveKudos, onSeeSpotlight }: Props) {
             className="inline-flex items-center gap-2 rounded-full border border-line/10 bg-line/[0.05] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-mist"
           >
             <Sparkles size={13} className="text-amber-600 dark:text-amber-300" />
-            Public recognition
+            {t('hero.badge')}
           </motion.span>
 
           <motion.h1
             variants={item}
             className="font-display mt-4 text-4xl leading-[1.05] tracking-tight sm:text-5xl"
           >
-            Great work deserves
+            {t('hero.titleLead')}
             <span className="bg-gradient-to-r from-amber-500 via-rose-500 to-violet-500 bg-clip-text text-transparent dark:from-amber-200 dark:via-rose-300 dark:to-violet-300">
               {' '}
-              an audience.
+              {t('hero.titleAccent')}
             </span>
           </motion.h1>
 
           <motion.p variants={item} className="mt-4 max-w-xl text-[15px] leading-relaxed text-mist">
-            Call out the people who made your week better. Say thanks out loud, make it stick, and
-            watch the whole team light up.
+            {t('hero.subtitle')}
           </motion.p>
 
           <motion.div variants={item} className="mt-6 flex flex-wrap items-center gap-3">
@@ -69,14 +71,14 @@ export default function Hero({ stats, onGiveKudos, onSeeSpotlight }: Props) {
               className="focus-ring inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-300 to-rose-400 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-orange-500/25 transition hover:brightness-110 active:scale-[0.98]"
             >
               <Heart size={16} strokeWidth={2.6} />
-              Celebrate a teammate
+              {t('hero.cta')}
             </button>
             <button
               type="button"
               onClick={onSeeSpotlight}
               className="focus-ring inline-flex items-center gap-1.5 rounded-full border border-line/10 bg-line/[0.04] px-4 py-3 text-sm font-medium text-fg transition hover:border-line/25 hover:bg-line/[0.08]"
             >
-              See the spotlight
+              {t('hero.spotlightCta')}
               <ArrowUpRight size={15} />
             </button>
           </motion.div>
@@ -85,19 +87,19 @@ export default function Hero({ stats, onGiveKudos, onSeeSpotlight }: Props) {
         <motion.dl variants={item} className="grid grid-cols-3 gap-3 lg:grid-cols-1">
           <Stat
             icon={<Sparkles size={14} />}
-            label="Kudos this week"
+            label={t('hero.statWeek')}
             value={stats ? stats.week : '—'}
             tone="text-amber-600 dark:text-amber-300"
           />
           <Stat
             icon={<Users size={14} />}
-            label="People celebrated"
+            label={t('hero.statPeople')}
             value={stats ? stats.totals.people : '—'}
             tone="text-violet-600 dark:text-violet-300"
           />
           <Stat
             icon={<Heart size={14} />}
-            label="Kudos all time"
+            label={t('hero.statTotal')}
             value={stats ? stats.totals.kudos : '—'}
             tone="text-rose-600 dark:text-rose-300"
           />

@@ -1,6 +1,8 @@
 import { BADGE_BY_ID } from '../lib/meta'
+import { useI18n } from '../lib/i18n'
 
 export default function BadgePill({ id, size = 'sm' }: { id: string; size?: 'sm' | 'md' }) {
+  const { t } = useI18n()
   const badge = BADGE_BY_ID[id]
   if (!badge) return null
 
@@ -11,7 +13,7 @@ export default function BadgePill({ id, size = 'sm' }: { id: string; size?: 'sm'
       } font-medium`}
     >
       <span aria-hidden="true">{badge.emoji}</span>
-      {badge.label}
+      {t(`badge.${badge.id}`)}
     </span>
   )
 }

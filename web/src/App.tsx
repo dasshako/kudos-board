@@ -16,6 +16,7 @@ import {
   type CreateKudosInput,
 } from './lib/api'
 import { EMOJI } from './lib/meta'
+import { useI18n } from './lib/i18n'
 import type { Filters, Kudos, Person, Stats } from './lib/types'
 
 const VIEWER_KEY = 'kudos.viewer'
@@ -23,6 +24,7 @@ const VIEWER_KEY = 'kudos.viewer'
 type Toast = { kind: 'success' | 'error'; message: string }
 
 export default function App() {
+  const { t } = useI18n()
   const [people, setPeople] = useState<Person[]>([])
   const [viewerId, setViewerId] = useState<string | null>(() => localStorage.getItem(VIEWER_KEY))
   const [kudos, setKudos] = useState<Kudos[]>([])
@@ -69,12 +71,12 @@ export default function App() {
     } catch (error) {
       setToast({
         kind: 'error',
-        message: error instanceof Error ? error.message : 'Could not load the board.',
+        message: error instanceof Error ? error.message : t('app.toastLoadError'),
       })
     } finally {
       setInitialLoading(false)
     }
-  }, [viewerId, filters.badge, filters.sort, debouncedQuery])
+  }, [viewerId, filters.badge, filters.sort, debouncedQuery, t])
 
   useEffect(() => {
     loadFeed()
@@ -153,7 +155,7 @@ export default function App() {
     } catch (error) {
       setToast({
         kind: 'error',
-        message: error instanceof Error ? error.message : 'Could not save that reaction.',
+        message: error instanceof Error ? error.message : t('app.toastReactionError'),
       })
       loadFeed()
     }
@@ -163,7 +165,7 @@ export default function App() {
     const { id } = await createKudos(input)
     setComposerOpen(false)
     setBurst((value) => value + 1)
-    setToast({ kind: 'success', message: 'Kudos sent — that teammate will feel it.' })
+    setToast({ kind: 'success', message: t('app.toastSent') })
     setFilters({ badge: 'all', q: '', sort: 'new' })
     setDebouncedQuery('')
     setHighlightId(id)
@@ -182,14 +184,14 @@ export default function App() {
       <div className="grid min-h-screen place-items-center px-6">
         <div className="glass max-w-md p-6 text-center">
           <AlertTriangle className="mx-auto text-amber-300" size={26} />
-          <h1 className="mt-3 text-lg font-semibold">The board is out of reach</h1>
+          <h1 className="mt-3 text-lg font-semibold">{t('app.bootTitle')}</h1>
           <p className="mt-1.5 text-sm text-mist">{bootError}</p>
           <button
             type="button"
             onClick={() => window.location.reload()}
             className="mt-4 rounded-full bg-line/10 px-4 py-2 text-sm font-medium transition hover:bg-line/20"
           >
-            Try again
+            {t('app.tryAgain')}
           </button>
         </div>
       </div>
@@ -236,8 +238,8 @@ export default function App() {
         </div>
 
         <footer className="mt-12 flex flex-wrap items-center justify-between gap-2 border-t border-line/10 pt-5 text-[11px] text-mist/60">
-          <p>Kudos · built for teams who say thanks out loud.</p>
-          <p>Updates every few seconds — no refresh needed.</p>
+          <p>{t('app.footerLeft')}</p>
+          <p>{t('app.footerRight')}</p>
         </footer>
       </main>
 
