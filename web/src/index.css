@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Light is the default; `.dark` on <html> switches the palette. */
+  :root {
+    color-scheme: light;
+    --ink: 249 248 245;
+    --fg: 15 23 42;
+    --mist: 100 106 128;
+    --line: 15 23 42;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --ink: 7 6 15;
+    --fg: 241 245 249;
+    --mist: 165 163 192;
+    --line: 255 255 255;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    @apply bg-ink text-fg antialiased;
+    font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+      sans-serif;
+    background-image:
+      radial-gradient(900px 620px at 12% -12%, rgba(251, 191, 36, 0.14), transparent 62%),
+      radial-gradient(820px 520px at 88% -4%, rgba(139, 92, 246, 0.1), transparent 62%),
+      radial-gradient(760px 520px at 52% 112%, rgba(34, 211, 238, 0.08), transparent 62%);
+    background-attachment: fixed;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(900px 620px at 12% -12%, rgba(251, 191, 36, 0.16), transparent 62%),
+      radial-gradient(820px 520px at 88% -4%, rgba(139, 92, 246, 0.2), transparent 62%),
+      radial-gradient(760px 520px at 52% 112%, rgba(34, 211, 238, 0.1), transparent 62%);
+  }
+
+  ::selection {
+    background: rgba(251, 191, 36, 0.28);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--line) / 0.18) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: rgb(var(--line) / 0.16);
+    border-radius: 999px;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+  }
+
+  .glass {
+    @apply rounded-3xl border border-line/10 bg-white/80 shadow-sm backdrop-blur-xl dark:bg-white/[0.045] dark:shadow-none;
+  }
+
+  .card-hover {
+    @apply transition duration-300 hover:-translate-y-0.5 hover:border-line/20 hover:bg-white dark:hover:bg-white/[0.07];
+  }
+
+  .focus-ring {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 focus-visible:ring-offset-2 focus-visible:ring-offset-ink;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@layer components {
+  /* Small bordered fills: chips, inputs, stat tiles, inline panels. */
+  .subtle {
+    @apply border border-line/10 bg-line/[0.04];
+  }
+
+  .subtle-hover {
+    @apply hover:border-line/25 hover:bg-line/[0.07];
+  }
+
+  .track {
+    @apply bg-line/[0.08];
+  }
+
+  .field {
+    @apply border border-line/10 bg-white text-fg placeholder:text-mist/60 dark:bg-line/[0.04];
+  }
+
+  .popover {
+    @apply rounded-2xl border border-line/10 bg-white shadow-xl dark:bg-[#100e22]/95 dark:shadow-lift dark:backdrop-blur-xl;
+  }
+
+  .chip-active {
+    @apply border-amber-500/40 bg-amber-100 text-amber-800 dark:border-amber-300/50 dark:bg-amber-300/15 dark:text-amber-100;
+  }
+
+  .chip-idle {
+    @apply border-line/10 bg-line/[0.03] text-mist hover:border-line/25 hover:text-fg;
+  }
+
+  .reaction-active {
+    @apply border-amber-500/40 bg-amber-100 text-amber-800 dark:border-amber-300/50 dark:bg-amber-300/15 dark:text-amber-100;
+  }
+}
